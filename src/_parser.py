@@ -99,3 +99,36 @@ def parse_loop_statement(self):
     body = self.parse_statement()
     
     return LoopStatement(iterations, body)
+
+
+### Functions
+class FunctionDefinition(ASTNode):
+    def __init__(self, name, body):
+        self.name = name
+        self.body = body
+
+class FunctionCall(ASTNode):
+    def __init__(self, name):
+        self.name = name
+
+# Extend the Parser to handle function definitions
+# Assume the syntax is "define function [name] as"
+
+def parse_function_definition(self):
+    self.get_next_token()  # consume 'define function'
+    name_token = self.get_next_token()  # should be the function name
+    self.get_next_token()  # consume 'as'
+    
+    # Parse the function body (single statement for simplicity)
+    body = self.parse_statement()
+    
+    return FunctionDefinition(name_token.value, body)
+
+# Extend the Parser to handle function calls
+# Assume the syntax is "call [name]"
+
+def parse_function_call(self):
+    self.get_next_token()  # consume 'call'
+    name_token = self.get_next_token()  # should be the function name
+    
+    return FunctionCall(name_token.value)
