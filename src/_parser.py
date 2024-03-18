@@ -55,3 +55,27 @@ def parse_variable_assignment(self):
 
 # Update the parse method to handle variable assignment
 # Add a check for 'set' token and then call parse_variable_assignment
+
+class IfStatement(ASTNode):
+    def __init__(self, condition, true_branch, false_branch=None):
+        self.condition = condition
+        self.true_branch = true_branch
+        self.false_branch = false_branch
+
+# Extend the Parser to handle if statements
+# Assume a simple condition "if [variable_name] is [value]"
+
+def parse_if_statement(self):
+    # Assuming the current token is 'if'
+    self.get_next_token()  # consume 'if'
+    variable_name_token = self.get_next_token()  # should be a variable name
+    self.get_next_token()  # consume 'is'
+    value_token = self.get_next_token()  # should be a value
+    condition = (variable_name_token.value, value_token.value)
+    
+    # Parse the true branch (single statement for simplicity)
+    true_branch = self.parse_statement()
+    
+    # Optionally handle else branch
+    
+    return IfStatement(condition, true_branch)
