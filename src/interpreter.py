@@ -42,3 +42,13 @@ def visit_IfStatement(self, node):
 def visit_LoopStatement(self, node):
     for _ in range(node.iterations):
         self.visit(node.body)
+
+### Functions
+def visit_FunctionDefinition(self, node):
+    self.functions[node.name] = node.body
+
+def visit_FunctionCall(self, node):
+    if node.name in self.functions:
+        self.visit(self.functions[node.name])
+    else:
+        raise Exception(f"Function {node.name} not defined")
