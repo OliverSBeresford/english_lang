@@ -18,6 +18,14 @@ class Interpreter:
         for node in self.ast:
             self.visit(node)
 
+
+def visit_VariableAssignment(self, node):
+    # Assume we have a dictionary called self.variables to store variable values
+    self.variables[node.variable_name] = self.visit(node.value)
+
+# Update the interpret method to handle variable assignments
+# When a VariableAssignment node is encountered, call visit_VariableAssignment
+
 # Example usage
 # Assuming the AST is generated from the parser for the input "print 'Hello, World!'"
 """ast = [PrintStatement('"Hello, World!"')]
