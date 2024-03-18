@@ -31,3 +31,10 @@ def visit_VariableAssignment(self, node):
 """ast = [PrintStatement('"Hello, World!"')]
 interpreter = Interpreter(ast)
 interpreter.interpret()"""
+# Output: Hello, World!
+def visit_IfStatement(self, node):
+    variable_value = self.variables.get(node.condition[0])
+    if variable_value == node.condition[1]:
+        self.visit(node.true_branch)
+    elif node.false_branch:
+        self.visit(node.false_branch)
