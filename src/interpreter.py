@@ -38,3 +38,7 @@ def visit_IfStatement(self, node):
         self.visit(node.true_branch)
     elif node.false_branch:
         self.visit(node.false_branch)
+
+def visit_LoopStatement(self, node):
+    for _ in range(node.iterations):
+        self.visit(node.body)
