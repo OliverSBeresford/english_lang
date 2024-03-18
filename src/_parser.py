@@ -79,3 +79,23 @@ def parse_if_statement(self):
     # Optionally handle else branch
     
     return IfStatement(condition, true_branch)
+
+
+class LoopStatement(ASTNode):
+    def __init__(self, iterations, body):
+        self.iterations = iterations
+        self.body = body
+
+# Extend the Parser to handle loop statements
+# Assume the syntax is "repeat [number] times"
+
+def parse_loop_statement(self):
+    self.get_next_token()  # consume 'repeat'
+    iterations_token = self.get_next_token()  # should be a number
+    iterations = int(iterations_token.value)
+    self.get_next_token()  # consume 'times'
+    
+    # Parse the loop body (single statement for simplicity)
+    body = self.parse_statement()
+    
+    return LoopStatement(iterations, body)
