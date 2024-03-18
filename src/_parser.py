@@ -36,3 +36,22 @@ class Parser:
     def error(self):
         raise Exception('Parsing error')
 
+
+class VariableAssignment(ASTNode):
+    def __init__(self, variable_name, value):
+        self.variable_name = variable_name
+        self.value = value
+
+# Extend the Parser to handle variable assignment
+# Assume the syntax is "set [variable_name] to [value]"
+
+def parse_variable_assignment(self):
+    # Assuming the current token is 'set'
+    self.get_next_token()  # consume 'set'
+    variable_name_token = self.get_next_token()  # should be a variable name
+    self.get_next_token()  # consume 'to'
+    value_token = self.get_next_token()  # should be a value
+    return VariableAssignment(variable_name_token.value, value_token.value)
+
+# Update the parse method to handle variable assignment
+# Add a check for 'set' token and then call parse_variable_assignment
