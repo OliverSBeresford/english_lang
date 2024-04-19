@@ -45,9 +45,10 @@ class Lexer:
 
     def word(self):
         result = ''
-        while self.pos < len(self.text) and (self.text[self.pos].isalpha() or self.text[self.pos] in ['"', ' ']):
+        while self.pos < len(self.text) and (self.text[self.pos].isalpha()):
             result += self.text[self.pos]
             self.advance()
+        
         return Token('WORD', result)
 
     def number(self):
@@ -65,6 +66,7 @@ class Lexer:
             result += self.text[self.pos]
             self.advance()
         
+        self.advance()
         return Token('STRING', result)
 
     def error(self):
