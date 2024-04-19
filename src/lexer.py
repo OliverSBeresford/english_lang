@@ -28,11 +28,14 @@ class Lexer:
             self.skip_whitespace()
             return self.get_next_token()
 
-        if current_char.isalpha() or current_char == '"':
+        if current_char.isalpha():
             return self.word()
 
         if current_char.isdigit():
             return self.number()
+        
+        if current_char == "'" or current_char == '"':
+            return self.string()
 
         self.error()
 
@@ -53,6 +56,16 @@ class Lexer:
             result += self.text[self.pos]
             self.advance()
         return Token('NUMBER', result)
+
+    def string(self):
+        result = ''
+        character = self.text[self.pos]
+        self.advance()
+        while self.pos < len(self.text) and self.text[self.pos] != character:
+            result += self.text[self.pos]
+            self.advance()
+        
+        return Token('STRING', result)
 
     def error(self):
         raise Exception('Invalid character')
