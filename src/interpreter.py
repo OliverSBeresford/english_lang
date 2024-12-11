@@ -1,6 +1,10 @@
+import _parser as parser
+
 class Interpreter:
     def __init__(self, ast):
         self.ast = ast
+        self.variables = dict()
+        print("Abstract syntax tree", self.ast)
 
     def visit(self, node):
         method_name = f'visit_{type(node).__name__}'
@@ -11,17 +15,23 @@ class Interpreter:
         raise Exception(f'No visit_{type(node).__name__} method')
 
     def visit_PrintStatement(self, node):
-        value = node.value.strip('"')
+        if type(node.value) == parser.Variable:
+            value = self.get_variable_value(node.value.name)
+        else:
+            value = node.value.strip('"').strip("'")
         print(value)
 
     def interpret(self):
         for node in self.ast:
             self.visit(node)
-
+            
+    def get_variable_value(self, name):
+        return self.variables[name]
 
     def visit_VariableAssignment(self, node):
         # Assume we have a dictionary called self.variables to store variable values
-        self.variables[node.variable_name] = self.visit(node.value)
+        print(type(node.value))
+        self.variables[node.name] = node.value
 
     # Update the interpret method to handle variable assignments
     # When a VariableAssignment node is encountered, call visit_VariableAssignment

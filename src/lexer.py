@@ -1,8 +1,8 @@
 import re
 
 class Token:
-    def __init__(self, type_, value):
-        self.type = type_
+    def __init__(self, _type, value):
+        self.type = _type
         self.value = value
 
     def __repr__(self):
@@ -28,14 +28,17 @@ class Lexer:
             self.skip_whitespace()
             return self.get_next_token()
 
-        if current_char.isalpha():
+        if current_char.isalnum():
             return self.word()
 
-        if current_char.isdigit():
-            return self.number()
+        # if current_char.isdigit():
+        #     return self.number()
         
         if current_char == "'" or current_char == '"':
             return self.string()
+        
+        if current_char in ['+', '-', '*', '/']:
+            return self.operator()
 
         self.error()
 
@@ -45,29 +48,39 @@ class Lexer:
 
     def word(self):
         result = ''
-        while self.pos < len(self.text) and (self.text[self.pos].isalpha()):
+        while self.pos < len(self.text) and (self.text[self.pos].isalnum()):
             result += self.text[self.pos]
             self.advance()
+        if all([c.isdigit() or c == '.' for c in result]) and result.count('.') < 2:
+            return Token('NUMBER', result)
+        
         
         return Token('WORD', result)
 
-    def number(self):
-        result = ''
-        while self.pos < len(self.text) and self.text[self.pos].isdigit():
-            result += self.text[self.pos]
-            self.advance()
-        return Token('NUMBER', result)
+    # def number(self):
+    #     result = ''
+    #     char = self.text[self.pos]
+    #     while self.pos < len(self.text) and (char.isdigit() or (char == '.' and not '.' in result)):
+    #         result += self.text[self.pos]
+    #         self.advance()
+    #     if self.pos < len(self.text) and 
+    #     return Token('NUMBER', result)
 
     def string(self):
         result = ''
-        character = self.text[self.pos]
+        result += self.text[self.pos]
         self.advance()
-        while self.pos < len(self.text) and self.text[self.pos] != character:
+        while self.pos < len(self.text) and self.text[self.pos] != result[0]:
             result += self.text[self.pos]
             self.advance()
         
+        result += self.text[self.pos]
         self.advance()
         return Token('STRING', result)
+    
+    def operator(self):
+        self.advance()
+        return Token('OPERATOR', self.text[self.pos - 1])
 
     def error(self):
         raise Exception('Invalid character')
